@@ -1,0 +1,1 @@
+%~dp0tools\apktool if tools/framework/twframework-res.apk

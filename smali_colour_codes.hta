@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>:: ANDROID Color Converter ::</title>
+<style>
+body {margin:30px 0; font: menu; background-color: buttonface;}
+input {border:1px solid #888;padding:2px;text-align:right;width:100px;}
+b {display:block; width:60px;float:left;text-align:right;padding:5px;}
+#prew {position:absolute;top:10px;right:10px;bottom:10px;width:30%;border:1px solid #888;}
+#lb, #sh {position:absolute;top:50%;width:100%;text-align:center;font-weight:bold;margin:-8px 0 0;}
+#sh {color:#ccc;margin:-7px 0 0 1px;}
+</style>
+<script lang="javascript">
+<!--//<![CDATA[
+window.resizeTo(300, 190);
+window.moveTo(screen.width/2-150, screen.height/2-100);
+
+function dec2hex(dec){
+    dec = ('' + dec).replace(/-/,'');
+    var hex = "0123456789ABCDEF", result = '';
+    do {
+        result = hex.charAt(dec % 16) + result;
+        dec = Math.floor(dec / 16);
+    } while(dec > 0);
+    return result;
+}
+
+function dohex(frm) {
+    str = frm.hex.value;
+    if (str != '') {
+        while (str.length < 3) {str += '0'}
+        if (str.length == 3) str = str.charAt(0) + str.charAt(0) + str.charAt(1) + str.charAt(1) + str.charAt(2) + str.charAt(2);
+        if (str.length < 7) str = 'FF' + str;
+        while (str.length < 8) {str += '0'}
+        str = str.toUpperCase();
+        frm.hex.value = str;
+        if (/^[0-9A-F]{8}$/.test(str)){
+            var a = parseInt(str,16);
+            if (a > 2147483647) a -= 4294967296;
+            frm.dec.value = a;
+            frm.xeh.value = (a < 0 ? '-0x' : '0x') + dec2hex(a);
+            doprew();
+        } else alert("Неверный формат\nДолжно быть в формате AARRGGBB\t\nПример: FF000000");
+    }
+}
+
+function doxeh(frm) {
+    str = frm.xeh.value;
+    if (str != '') {
+        if (!/^-?0x/.test(str)) {
+            str = (str.charAt(0) == '-') ? '-0x' + str.substr(1) : '0x' +str;
+        }
+        str = str.toUpperCase().replace(/X/,'x');
+        frm.xeh.value = str;
+        if (/^-?0x[0-9A-F]+$/.test(str)) {
+            str = parseInt(str);
+            if (str > 2147483647) {
+                alert("Неверное значение\nДолжно быть меньше 0x7FFFFFFF\t");
+            } else if (str < -2147483648) {
+                alert("Неверное значение\nДолжно быть больше -0x80000000\t");
+            } else {
+                frm.dec.value = str;
+                var b = str < 0 ? dec2hex(str + 4294967296) : dec2hex(str)
+                while (b.length < 8) {b = '0' + b};
+                frm.hex.value = b;
+                doprew();
+            }
+        } else alert("Неверный формат\nДолжно быть в формате -0xH+\t\nПример: -0x7F7F80");
+    }
+}
+
+function dodec(frm) {
+    str = frm.dec.value;
+    if (str != '') {
+        if (/^-?\d+$/.test(str)) {
+            str = parseInt(str);
+            if (str > 2147483647) {
+                alert("Неверное значение\nДолжно быть меньше 2147483647\t");
+            } else if (str < -2147483648) {
+                alert("Неверное значение\nДолжно быть больше -2147483648\t");
+            } else {
+                var a = str < 0 ? dec2hex(str + 4294967296) : dec2hex(str);
+                while (a.length < 8) {a = '0' + a};
+                frm.hex.value = a;
+                frm.xeh.value = (str < 0 ? '-0x' : '0x') + dec2hex(str);
+                doprew();
+            }
+        } else alert("Неверный формат\nДолжно быть в формате D+\t\nПример: 65536");
+    }
+}
+
+function doprew() {
+    var p = document.getElementById('prew');
+    var clr = document.frm.hex.value.substr(2);
+    p.style.background = '#' + clr;
+}
+
+//]]>-->
+</script>
+<HTA:APPLICATION
+APPLICATIONNAME="AndroidColorConverter"
+BORDER="thin"
+BORDERSTYLE="normal"
+CAPTION="yes"
+CONTEXTMENU="yes"
+ICON="myicon.ico"
+INNERBORDER="no"
+MAXIMIZEBUTTON="no"
+MINIMIZEBUTTON="no"
+NAVIGABLE="no"
+SCROLL="no"
+SCROLLFLAT="yes"
+SELECTION="yes"
+SHOWINTASKBAR="yes"
+SINGLEINSTANCE="yes"
+SYSMENU="yes"
+VERSION="1.0"
+WINDOWSTATE="normal">
+</HTA:APPLICATION>
+</head>
+
+<body>
+
+<form name="frm">
+    <b>HEX&nbsp;</b><input type="text" name="hex" maxlength="8" onblur="dohex(this.form)" /><br /><br />
+    <b>SMALI&nbsp;</b><input type="text" name="xeh" maxlength="11" onblur="doxeh(this.form)" /><br /><br />
+    <b>XML&nbsp;</b><input type="text" name="dec" maxlength="11" onblur="dodec(this.form)" />
+</form>
+<div id="prew"><div id="sh">PREVIEW</div><div id="lb">PREVIEW</div></div>
+</body>
+
+</html>
