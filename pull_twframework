@@ -1,0 +1,5 @@
+#!/bin/bash
+
+tools/adb pull /system/framework/twframework-res.apk tools/framework/twframework-res.apk
+
+exit 0

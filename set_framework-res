@@ -1,0 +1,3 @@
+#!/bin/bash
+tools/apktool if tools/framework/framework-res.apk
+exit 0

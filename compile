@@ -1,0 +1,7 @@
+#! /bin/bash
+cd apk
+for f in *.apk; do
+	../tools/apktool b -c ../working/apks/$f
+done
+cd ..
+exit 0

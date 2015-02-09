@@ -1,6 +1,6 @@
 # Apktool scripts - Kryten2k35
 
-This set of scripts uses Apktool 2.0.0b9 and Apktool 1.5.3 by iBotPeaches (Originally brutall). 
+This set of scripts uses Apktool 2.0.0rc3 by iBotPeaches (Originally brutall). 
 
 They are scripts I use daily for my work, so I thought I would share them. They are not perfect, but they do the job for me.
 
@@ -8,7 +8,7 @@ They are scripts I use daily for my work, so I thought I would share them. They 
 
 JavaJRE 1.7
 
-Windows
+Windows or Linux
 
 ## How to use
 
